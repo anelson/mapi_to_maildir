@@ -360,8 +360,17 @@ namespace MapiToMaildir
 
 				for( ;recipientsTable.QueryRows(1, 0, out rows) == Error.Success && rows.Length > 0; ) {
 					MAPI33.WellKnownValues.PR_RECIPIENT_TYPE recipType = (MAPI33.WellKnownValues.PR_RECIPIENT_TYPE)((MapiInt32)rows[0,0]).Value;
-					String emailAddr = ((MapiString)rows[0,1]).Value;
-					String emailName = ((MapiString)rows[0,2]).Value;
+                    String emailAddr = null;
+                    String emailName = null;
+
+                    if (rows[0, 1] is MapiString) {
+                        emailAddr = ((MapiString)rows[0, 1]).Value;
+                    }
+
+                    if (rows[0, 2] is MapiString) {
+                        emailName = ((MapiString)rows[0, 2]).Value;
+                    }
+
 					AddressType type = AddressType.To;
 
 					switch (recipType) {
